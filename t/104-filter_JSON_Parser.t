@@ -4,11 +4,12 @@ use Test::More;
 BEGIN { require 't/base.include' }
 
 SKIP: {
+    eval {
+        require JSON::Parser;
+        JSON::Parser->import;
+    };
+    skip 'Needs JSON::Parser', 1 if $@;
 
-    eval { require JSON::Parser };
-    skip 'Needs JSON::Parser 1.07', 1 if $@;
-    use_ok('JSON::Parser', 1.07);
-    skip 'Needs JSON::Parser 1.07', 1 if $JSON::Parser::VERSION ne '1.07';
     my $parser = JSON::Parser->new;
     is( p( $parser->jsonToObj(input) ),
         expected, "JSON:Parser, from_json, live" );
